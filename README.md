@@ -20,7 +20,6 @@ The project computes which areas are visible from a radar station at various air
   - Exports results to KMZ format for Google Earth visualization
   - Uses Numba for optimized performance
 
--- **`OR`** --
 - **`NoteBook_Radar_Visibility_Map.ipynb`**: A Jupyter Notebook that has everything
   - Combines all python files to have one clean file system
 
