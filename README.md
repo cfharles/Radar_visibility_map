@@ -20,6 +20,10 @@ The project computes which areas are visible from a radar station at various air
   - Exports results to KMZ format for Google Earth visualization
   - Uses Numba for optimized performance
 
+-- **`OR`** --
+- **`NoteBook_Radar_Visibility_Map.ipynb`**: A Jupyter Notebook that has everything
+  - Combines all python files to have one clean file system
+
 ## Usage
 
 1. Ensure you have the required dependencies:
@@ -30,9 +34,9 @@ The project computes which areas are visible from a radar station at various air
 
 2. Make sure `Nice_Terrain_Data.npz` is in the project directory
 
-3. Run the main script:
+3. Run the notebook:
    ```bash
-   python Radar_Visibility_Model.py
+   NoteBook_Radar_Visibility_Map.ipynb
    ```
 
 4. The script will:
