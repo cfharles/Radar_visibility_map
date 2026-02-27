@@ -1,55 +1,67 @@
-# Radar Visibility Map Project
+# Radar Visibility Map
 
-This project calculates radar visibility maps for aircraft at different flight levels, taking into account terrain occlusion and Earth's curvature.
+Compute radar line-of-sight coverage maps at multiple flight altitudes while accounting for terrain blocking and Earth curvature.
 
-## Overview
+## What This Project Does
 
-The project computes which areas are visible from a radar station at various aircraft altitudes. It uses ray casting algorithms to determine if terrain blocks the line of sight between the radar and potential target locations.
+Given:
+- Terrain elevation data (`Nice_Terrain_Data.npz`)
+- A radar site location and height
+- A list of target flight altitudes
 
-## Files
+the model computes visible vs. non-visible areas and exports:
+- `vis_overlay_FL*.png` coverage overlays
+- `radar_visibility.kmz` for visualization in Google Earth
 
-- **`Data_loading.py`**: Loads terrain data and sets up radar configuration
-  - Loads terrain elevation data from `Nice_Terrain_Data.npz`
-  - Defines radar position (latitude, longitude, height)
-  - Converts geographic coordinates to local x/y coordinates
-  - Configures flight levels to analyze
+## Repository Structure
 
-- **`Radar_Visibility_Model.py`**: Main visibility computation engine
-  - Computes visibility maps using ray casting
-  - Accounts for Earth's curvature in calculations
-  - Exports results to KMZ format for Google Earth visualization
-  - Uses Numba for optimized performance
+- `Data_loading.py` - Loads terrain data, defines radar configuration, and prepares coordinate grids.
+- `Radar_Visibility_Model.py` - Runs the visibility computation and exports PNG/KMZ outputs.
+- `Nice_Terrain_Data.npz` - Terrain dataset used by the model.
+- `requirements.txt` - Python dependencies.
 
-- **`NoteBook_Radar_Visibility_Map.ipynb`**: A Jupyter Notebook that has everything
-  - Combines all python files to have one clean file system
+## Requirements
 
-## Usage
+- Python 3.9+
 
-1. Ensure you have the required dependencies:
-   - `numpy`
-   - `numba`
-   - `matplotlib`
-   - `simplekml`
+## Setup
 
-2. Make sure `Nice_Terrain_Data.npz` is in the project directory
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-3. Run the notebook:
-   ```bash
-   NoteBook_Radar_Visibility_Map.ipynb
-   ```
+## Run
 
-4. The script will:
-   - Compute visibility maps for each configured flight level
-   - Generate overlay images (`vis_overlay_FL*.png`)
-   - Export a KMZ file (`radar_visibility.kmz`) for visualization in Google Earth
+From the project root:
+
+```bash
+python Radar_Visibility_Model.py
+```
+
+The script iterates through configured flight altitudes, prints timing per altitude, and generates output files in the same directory.
 
 ## Configuration
 
-Radar position and flight levels can be modified in `Data_loading.py`:
-- Radar location: `lat_radar`, `lon_radar`, `radar_height`
-- Flight levels: `flight_levels` array
+Edit values in `Data_loading.py`:
 
-## Output
+- Radar position: `lat_radar`, `lon_radar`
+- Radar above-ground height (m): `radar_height`
+- Target altitudes (m): `flight_levels`
 
-- PNG overlay images for each flight level showing visible areas
-- KMZ file containing all layers for Google Earth visualization
+Optional performance tuning in `Radar_Visibility_Model.py`:
+
+- `samples_per_km`
+- `min_samples`
+- `max_samples`
+
+## Outputs
+
+- `vis_overlay_FL<altitude>.png`: Per-altitude visibility overlays.
+- `radar_visibility.kmz`: Combined multi-layer result for Google Earth.
+
+## Notes
+
+- Keep `Nice_Terrain_Data.npz` in the project root unless you update the load path in `Data_loading.py`.
+- Runtime depends on terrain grid size and sampling configuration.
